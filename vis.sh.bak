@@ -1,0 +1,65 @@
+export DATE="20190606"
+export DATA_NUM="3"
+
+# python /home/shenhuahu/gnd/pandar_process/src/track/track_det.py \
+# 	--obs_csv_pn="/home/shenhuahu/gnd/pandar_process/src/track/data/TDT/M1/${DATE}/obstacles_${DATE}_data_num_${DATA_NUM}.csv" \
+# 	--res_pn="/home/shenhuahu/tdt/tmp/det_res.csv" \
+
+# python /home/shenhuahu/gnd/pandar_process/src/track/track_det.py \
+# 	--obs_csv_pn=/home/shenhuahu/gnd/pandar_process/src/track/data/TDT/M1/20190429/obstacles_20190429_data_num_1.csv \
+# 	--res_pn=/home/shenhuahu/tdt/tmp/belief_res.csv \
+# 	--output_det=False
+
+# TODO(jingchu): I modified this to generate data for DATE=20190606
+
+# this part is for 20190606
+# for DATA_NUM in 1
+# do
+# 
+# #     python /home/shenhuahu/gnd/pandar_process/src/track/track_det.py \
+# # 	--obs_csv_pn="/home/shenhuahu/${DATE}/obstacles_${DATE}_data_num_${DATA_NUM}_tracked.csv" \
+# # 	--res_pn="/home/shenhuahu/tdt/tmp/obstacles_${DATE}_data_num_${DATA_NUM}_tracked_shenhua.csv"
+# 
+#     python /home/shenhuahu/gnd/pandar_process/src/track/track_det.py \
+# 	--obs_csv_pn="/home/shenhuahu/${DATE}/obstacles_${DATE}_data_num_${DATA_NUM}_tracked.csv" \
+# 	--res_pn="/home/shenhuahu/tdt/tmp/obstacles_${DATE}_data_num_${DATA_NUM}_tracked_shenhua.csv" \
+# 	# --output_det='True'
+# 
+# #     python /home/shenhuahu/gnd/dataset_adapter/visualization/gnd_vis_tool.py \
+# # 	    --car_csv_pn "/home/shenhuahu/${DATE}/car_status_${DATE}_data_num_${DATA_NUM}.csv" \
+# # 	    --obs_csv_pn "/home/shenhuahu/tdt/tmp/obstacles_${DATE}_data_num_${DATA_NUM}_tracked_shenhua.csv" \
+# # 	    --out_dir "/home/shenhuahu/tdt/tmp/"
+# 		# (1, 20190606, 0, 0, 1)
+# 
+# #     python /home/shenhuahu/gnd/pandar_process/src/track/gnd_vis_tool.py \
+# # 	    --car_csv_pn="/home/shenhuahu/${DATE}/car_status_${DATE}_data_num_${DATA_NUM}.csv" \
+# # 	    --obs_csv_pn="/home/shenhuahu/20190606/obstacles_20190606_data_num_1_tracked.csv" \
+# # 	    --out_dir="/home/shenhuahu/tdt/tmp/"
+# done
+
+
+# python -m pandar_process.src.track.remove_ego_det_err \
+# 	--car_csv_pn="/home/shenhuahu/20190909/car_status_20190909.csv" \
+# 	--obs_csv_pn="/home/shenhuahu/20190909/obstacles_20190909_untracked.csv" \
+# 	--res_pn="/home/shenhuahu/20190909/res1.csv"
+cd ~/gnd
+# python -m pandar_process.src.track.track_det \
+# 	--obs_csv_pn="/home/shenhuahu/data/20190920/obstacles_20190920_untracked.csv" \
+# 	--res_pn="/home/shenhuahu/tdt/tmp/res.csv"
+for idx in {0..35}
+do
+    {
+        let "start = idx * 100"
+        let "end = idx * 100 + 100"
+        echo "idx range is ($start, $end)"
+        python -m dataset_adapter.visualization.gnd_vis_tool \
+            --car_csv_pn /home/shenhuahu/data/20190920/car_status_20190920_data_num_1.csv \
+            --obs_csv_pn /home/shenhuahu/tdt/tmp/res.csv \
+            --out_vid_path /home/shenhuahu/tdt/tmp/old_idx_${start}_${end}.mp4 \
+            --data_filter "(2, 20190920, 0, 0, 1)" \
+            --first_person_perspective false \
+            --refresh false \
+            --data_index_range "($start, $end)"
+    } &
+done
+cd -
