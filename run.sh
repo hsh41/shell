@@ -1,2 +1,1 @@
-horovodrun -np $1 python -m main | tee out.log
-# horovodrun -np $1 python main.py
+horovodrun -np $1 python main.py
